@@ -6,23 +6,24 @@
 const int windowLargeur = 800;
 const int windowHauteur = 600;
 
-// Dimensions de la fenêtre de défaite
+// Dimensions de la fenêtre de début
 const int window2Largeur = 800;
 const int window2Hauteur = 600;
 
 // Paramètres de l'oiseau
 const float birdRadius = 20.0f;
-const float gravite = 0.00003f; 
-const float jump = -0.06f; 
+const float gravite = 0.00004f;
+const float jump = -0.075f;
 float birdY;
 float verticalSpeed;
-const int vie = 3;
 
 // Paramètres des pipes
 const float pipeLargeur = 80.0f;
 const float espaceEntre = 150.0f;
-const float pipeSpeed = 0.03f; 
+const float pipeSpeed = 0.02f;
 std::vector<sf::RectangleShape> pipes;
+
+bool estMort;
 
 void resetGame() {
     birdY = windowHauteur / 2;
@@ -60,8 +61,31 @@ void updatePipes() {
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(windowLargeur, windowHauteur), "Flappy Bird");
+    sf::RenderWindow window2(sf::VideoMode(window2Largeur, window2Hauteur), "Menu de depart");
     sf::CircleShape bird(birdRadius);
     bird.setFillColor(sf::Color::Yellow);
+
+    estMort = false;
+
+    // Chargement de la police
+    sf::Font font;
+    if (!font.loadFromFile("C:/Users/acossardeaux/Downloads/keep_on_truckin_fw/KeeponTruckin.ttf")) {
+        std::cout << "Erreur de chargement de la police!" << std::endl;
+        return -1;
+    }
+
+    // Création du rectangle
+    sf::RectangleShape button(sf::Vector2f(300, 100));
+    button.setFillColor(sf::Color::Red);
+    button.setPosition(window2Largeur / 2 - 150, window2Hauteur / 2 - 50);
+
+    // Création du texte
+    sf::Text text;
+    text.setFont(font);
+    text.setString("Appuyer sur Entrer");
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::White);
+    text.setPosition(button.getPosition().x + 30, button.getPosition().y + 30);
 
     resetGame();
     spawnPipe();
@@ -77,13 +101,7 @@ int main() {
                     verticalSpeed = jump;
                 }
             }
-
-            if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Escape)
-                    window.close(); 
-            }
         }
-
 
         // Appliquer la gravité
         verticalSpeed += gravite;
@@ -98,10 +116,11 @@ int main() {
         bird.setPosition(windowLargeur / 4, birdY);
 
         for (const auto& pipe : pipes) {
-            if (bird.getGlobalBounds().intersects(pipe.getGlobalBounds()))
-                return 0;
+            if (bird.getGlobalBounds().intersects(pipe.getGlobalBounds())) {
+                estMort = true;
+                break;
+            }
         }
-
 
         updatePipes();
 
@@ -113,6 +132,29 @@ int main() {
         }
 
         window.display();
+
+        if (estMort) {
+            while (window2.isOpen()) {
+                sf::Event event2;
+                while (window2.pollEvent(event2)) {
+                    if (event2.type == sf::Event::Closed)
+                        window2.close();
+
+                    if (event2.type == sf::Event::KeyPressed) {
+                        if (event2.key.code == sf::Keyboard::Enter) {
+                            estMort = false;
+                            resetGame();
+                            window2.close();
+                        }
+                    }
+                }
+
+                window2.clear();
+                window2.draw(button); // Dessiner le rectangle
+                window2.draw(text);   // Dessiner le texte
+                window2.display();
+            }
+        }
     }
 
     return 0;
