@@ -33,8 +33,6 @@ bool checkCollision(const sf::Sprite& bird, const sf::Sprite& pipe) {
     sf::FloatRect birdBounds = bird.getGlobalBounds();
     sf::FloatRect pipeBounds = pipe.getGlobalBounds();
     sf::FloatRect customPipeBounds(pipeBounds.left + 10, pipeBounds.top + 10, pipeBounds.width - 20, std::abs(pipeBounds.height) - 20);
-
-    // Vérifier la collision avec les hitbox personnalisées
     return birdBounds.intersects(customPipeBounds);
 }
 
@@ -94,7 +92,7 @@ int main() {
 
     // Charger l'image de l'oiseau
     sf::Texture birdTexture;
-    if (!birdTexture.loadFromFile("C:/Users/acossardeaux/Downloads/flappy-bird-sprite-11549936843rfq2kg39db-removebg-preview.png")) {
+    if (!birdTexture.loadFromFile("assets/sprite_bird.png")) {
         std::cout << "Erreur de chargement de l'image!" << std::endl;
         return -1;
     }
@@ -104,14 +102,14 @@ int main() {
     bird.setScale(0.1f, 0.1f); 
 
     // Charger l'image des pipes
-    if (!pipeTexture.loadFromFile("C:/Users/acossardeaux/Downloads/pipe.png")) {
+    if (!pipeTexture.loadFromFile("assets/pipe.png")) {
         std::cout << "Erreur de chargement de l'image!" << std::endl;
         return -1;
     }
 
     // Charger le fond d'écran
     sf::Texture fondTexture;
-    if (!fondTexture.loadFromFile("C:/Users/acossardeaux/Pictures/fond_flappy.png")) {
+    if (!fondTexture.loadFromFile("assets/fond_flappy.png")) {
         std::cout << "Erreur de chargement de l'image!" << std::endl;
         return -1;
     }
@@ -119,20 +117,20 @@ int main() {
 
     // Charger la police d'écriture
     sf::Font font;
-    if (!font.loadFromFile("C:/Users/acossardeaux/Downloads/flappybirdy/FlappyBirdy.ttf")) {
+    if (!font.loadFromFile("assets/FlappyBirdy.ttf")) {
         std::cout << "Erreur de chargement de la police!" << std::endl;
         return -1;
     }
 
     // Charger et jouer le son du jeu
-    sf::SoundBuffer buffer;
-    if (!buffer.loadFromFile("C:/Users/acossardeaux/Downloads/Angry_Birds_Theme.ogg")) {
+    sf::SoundBuffer musique;
+    if (!musique.loadFromFile("assets/Angry_Birds_Theme.ogg")) {
         std::cout << "Erreur : Impossible de charger le fichier audio." << std::endl;
         return -1;
     }
 
     sf::Sound sound;
-    sound.setBuffer(buffer);
+    sound.setBuffer(musique);
     sound.setLoop(true); // Boucle la musique
     sound.play();
 
@@ -141,7 +139,7 @@ int main() {
     button.setFillColor(sf::Color::Blue);
     button.setPosition(window2Largeur / 2 - 150, window2Hauteur / 2 - 50);
 
-    // Création du texte pour le menu
+    // Création du texte sur le rectangle pour le menu
     sf::Text text;
     text.setFont(font);
     text.setString("Appuyer sur Entrer");
@@ -149,12 +147,20 @@ int main() {
     text.setFillColor(sf::Color::White);
     text.setPosition(button.getPosition().x + 27, button.getPosition().y + 15);
 
+    // Création du texte au dessus du rectangle
+    sf::Text text_dessus;
+    text_dessus.setFont(font);
+    text_dessus.setString("FLAPPY BIRD 0");
+    text_dessus.setCharacterSize(100);
+    text_dessus.setFillColor(sf::Color::White);
+    text_dessus.setPosition(window2Largeur / 2 - 183, window2Hauteur / 2 - 250);
+
     // Création du texte du score
     sf::Text scoreText;
     scoreText.setFont(font);
-    scoreText.setCharacterSize(40);
+    scoreText.setCharacterSize(70);
     scoreText.setFillColor(sf::Color::White);
-    scoreText.setPosition(windowLargeur / 2 - 30, 20);
+    scoreText.setPosition(windowLargeur / 2 - 85, 20);
 
     resetGame();
 
@@ -177,6 +183,7 @@ int main() {
         window2.draw(fond);
         window2.draw(button);
         window2.draw(text);
+        window2.draw(text_dessus);
         window2.display();
     }
 
@@ -184,11 +191,16 @@ int main() {
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 window.close();
-
+            }
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
+                    verticalSpeed = jump;
+                }
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Space) {
                     verticalSpeed = jump;
                 }
             }
