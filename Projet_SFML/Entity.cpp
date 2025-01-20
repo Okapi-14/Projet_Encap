@@ -1,19 +1,14 @@
 #include "Entity.h"
 
-Entity::Entity(float x, float y, float vitesse) : vitesse(vitesse) {
-    sprite.setSize({ 50.f, 50.f });
-    sprite.setFillColor(sf::Color::Blue);
+Entity::Entity(float x, float y, float width, float height) {
+    sprite.setSize({ width, height });
     sprite.setPosition(x, y);
-}
-
-void Entity::update(float deltaTime) {
-    // Par défaut, rien n'est fait ici
-}
-
-void Entity::draw(sf::RenderWindow& window) {
-    window.draw(sprite);
 }
 
 const sf::Vector2f& Entity::getPosition() const {
     return sprite.getPosition();
+}
+
+const sf::RectangleShape& Entity::getSprite() const {
+    return sprite;
 }

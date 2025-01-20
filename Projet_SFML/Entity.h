@@ -6,17 +6,16 @@
 class Entity {
 protected:
     sf::RectangleShape sprite;
-    float vitesse;
 
 public:
-    Entity(float x = 0, float y = 0, float vitesse = 200.f);
+    Entity(float x = 0, float y = 0, float width = 50.f, float height = 50.f);
     virtual ~Entity() = default;
 
-    virtual void handleInput(float deltaTime) = 0;
-    virtual void update(float deltaTime);
-    virtual void draw(sf::RenderWindow& window);
+    virtual void update(float deltaTime) = 0;
+    virtual void draw(sf::RenderWindow& window) = 0;
 
     const sf::Vector2f& getPosition() const;
+    const sf::RectangleShape& getSprite() const;
 };
 
 #endif // ENTITY_H
