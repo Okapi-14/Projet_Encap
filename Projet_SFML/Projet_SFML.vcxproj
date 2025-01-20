@@ -140,7 +140,9 @@
     <ClCompile Include="ChaserEnemy.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PartollingEnemy.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
@@ -149,6 +151,8 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="PatrollingEnemy.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

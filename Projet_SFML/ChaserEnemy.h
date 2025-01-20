@@ -10,7 +10,8 @@ private:
 
 public:
     ChaserEnemy(float x, float y, float speed = 100.f);
-    void update(float deltaTime, const Player& player) override;
+    void update(float deltaTime) override; // Implémente la méthode virtuelle pure
+    void updateWithPlayer(float deltaTime, const Player& player);
 };
 
 #endif // CHASER_ENEMY_H
