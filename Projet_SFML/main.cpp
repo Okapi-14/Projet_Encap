@@ -80,6 +80,14 @@ int main() {
                     break;
                 }
             }
+
+            for (const auto& interactable : interactables) {
+                std::cout << "Dessin de l'objet interactable à : "
+                    << interactable->getSprite().getPosition().x << ", "
+                    << interactable->getSprite().getPosition().y << std::endl;
+                window.draw(interactable->getSprite());
+            }
+
         }
 
         // Affichage

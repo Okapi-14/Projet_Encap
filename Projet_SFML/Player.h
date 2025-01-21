@@ -5,7 +5,8 @@
 
 class Player : public Entity {
 private:
-    float speed;
+    float speed;  
+    int keys = 0; 
 
 public:
     Player(float x = 0, float y = 0, float speed = 200.f);

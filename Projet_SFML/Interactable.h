@@ -3,10 +3,12 @@
 
 class Interactable {
 protected:
-    sf::RectangleShape sprite;
+    sf::RectangleShape sprite; // Sprite de l'objet interactable
 
 public:
     virtual ~Interactable() = default;
-    virtual void interact(Player& player) = 0;
-    const sf::RectangleShape& getSprite() const { return sprite; }
+    virtual void interact(Player& player) = 0;      // Méthode virtuelle pure
+    const sf::RectangleShape& getSprite() const {  // Accès au sprite
+        return sprite;
+    }
 };
