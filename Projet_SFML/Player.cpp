@@ -1,5 +1,9 @@
 #include "Player.h"
 #include "Config.h"
+#include <iostream>
+#include "Key.h"
+#include "Potion.h"
+#include "Interactable.h"
 
 Player::Player(float x, float y, float speed) : Entity(x, y), speed(speed) {
     sprite.setFillColor(sf::Color::Green);
@@ -26,4 +30,21 @@ void Player::update(float deltaTime) {
 
 void Player::draw(sf::RenderWindow& window) {
     window.draw(sprite);
+}
+
+// Augmente la vitesse du joueur
+void Player::increaseSpeed(float amount) {
+    speed += amount;
+    std::cout << "Nouvelle vitesse : " << speed << std::endl;
+}
+
+// Ajoute une clé à l'inventaire
+void Player::addKey() {
+    keys++;
+    std::cout << "Clés : " << keys << std::endl;
+}
+
+// Vérifie si le joueur possède une clé
+bool Player::hasKey() const {
+    return keys > 0;
 }

@@ -12,6 +12,10 @@ public:
     void handleInput(float deltaTime);
     void update(float deltaTime) override;
     void draw(sf::RenderWindow& window) override;
+    void increaseSpeed(float amount);
+    void addKey();
+    bool hasKey() const;
+
 };
 
 #endif // PLAYER_H
