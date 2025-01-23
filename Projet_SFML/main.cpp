@@ -1,21 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include "Player.h"
-#include "ChaserEnemy.h"
 #include "PatrollingEnemy.h"
 #include "Potion.h"
 #include "Key.h"
-#include "Utils.h"
 #include "EntityManager.h"
+#include "InteractableManager.h"
 #include "config.h"
-#include "Interactable.h"
 
 enum class GameState {
     Playing,
     GameOver
 };
+
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "jeu");
@@ -28,9 +24,9 @@ int main() {
         return -1;
     }
 
-    // Initialisation du jeu
     GameState gameState = GameState::Playing;
     EntityManager entityManager;
+    InteractableManager interactableManager;
 
     auto player = std::make_unique<Player>(100, 100);
     Player* playerPtr = player.get();
@@ -39,9 +35,8 @@ int main() {
     entityManager.addEntity(std::make_unique<ChaserEnemy>(400, 300));
     entityManager.addEntity(std::make_unique<PatrollingEnemy>(200, 200, 400, 400));
 
-    std::vector<std::unique_ptr<Interactable>> interactables;
-    interactables.push_back(std::make_unique<Potion>(50.f));
-    interactables.push_back(std::make_unique<Key>());
+    interactableManager.addInteractable(std::make_unique<Potion>(50.f));
+    interactableManager.addInteractable(std::make_unique<Key>());
 
     sf::Clock clock;
 
@@ -55,23 +50,11 @@ int main() {
         float deltaTime = clock.restart().asSeconds();
 
         if (gameState == GameState::Playing) {
-            // Mise à jour des entités
             playerPtr->update(deltaTime);
             entityManager.updateEnemiesWithPlayer(deltaTime, *playerPtr);
             entityManager.updateAll(deltaTime);
+            interactableManager.update(*playerPtr);
 
-            // Vérification des collisions avec les objets interactables
-            interactables.erase(std::remove_if(interactables.begin(), interactables.end(),
-                [&playerPtr](const std::unique_ptr<Interactable>& interactable) {
-                    if (checkCollision(playerPtr->getSprite(), interactable->getSprite())) {
-                        interactable->interact(*playerPtr);
-                        return true; // Supprime l'objet après interaction
-                    }
-                    return false;
-                }),
-                interactables.end());
-
-            // Vérification des collisions avec les ennemis
             for (const auto& entity : entityManager.getEntities()) {
                 auto* enemy = dynamic_cast<Enemy*>(entity.get());
                 if (enemy && checkCollision(playerPtr->getSprite(), enemy->getSprite())) {
@@ -80,25 +63,14 @@ int main() {
                     break;
                 }
             }
-
-            for (const auto& interactable : interactables) {
-                std::cout << "Dessin de l'objet interactable à : "
-                    << interactable->getSprite().getPosition().x << ", "
-                    << interactable->getSprite().getPosition().y << std::endl;
-                window.draw(interactable->getSprite());
-            }
-
         }
 
-        // Affichage
         window.clear();
 
         if (gameState == GameState::Playing) {
             playerPtr->draw(window);
-            for (const auto& interactable : interactables) {
-                window.draw(interactable->getSprite());
-            }
             entityManager.drawAll(window);
+            //interactableManager.draw(window);
         }
         else if (gameState == GameState::GameOver) {
             sf::Text gameOverText;

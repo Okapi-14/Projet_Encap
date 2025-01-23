@@ -1,5 +1,4 @@
 #include "EntityManager.h"
-#include "ChaserEnemy.h"
 
 const std::vector<std::unique_ptr<Entity>>& EntityManager::getEntities() const {
     return entities;

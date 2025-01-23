@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <memory>
-#include "Entity.h"
 #include "Player.h"
+#include "ChaserEnemy.h"
 
 class EntityManager {
 private:

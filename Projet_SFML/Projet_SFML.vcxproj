@@ -141,6 +141,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="InteractableManager.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PartollingEnemy.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Interactable.h" />
+    <ClInclude Include="InteractableManager.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="PatrollingEnemy.h" />
     <ClInclude Include="Player.h" />

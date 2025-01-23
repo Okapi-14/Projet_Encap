@@ -1,11 +1,22 @@
-#pragma once
+#ifndef KEY_H
+#define KEY_H
+
+#include <SFML/Graphics.hpp>
 #include "Interactable.h"
 
-class Key : public Interactable {
+class Key : public Entity, public Interactable {
 private:
-    bool isCollected;
+    bool collected;
 
 public:
     Key();
+
     void interact(Player& player) override;
+    void drawAll(sf::RenderWindow& window);
+
+    sf::RectangleShape& getSprite(); // Méthode non-constante pour permettre les modifications
+
+    const sf::RectangleShape& getSprite() const; // Méthode constante pour les accès en lecture
 };
+
+#endif

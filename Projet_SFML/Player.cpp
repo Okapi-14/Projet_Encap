@@ -3,7 +3,6 @@
 #include <iostream>
 #include "Key.h"
 #include "Potion.h"
-#include "Interactable.h"
 
 Player::Player(float x, float y, float speed) : Entity(x, y), speed(speed) {
     sprite.setFillColor(sf::Color::Green);

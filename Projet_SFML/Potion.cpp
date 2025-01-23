@@ -1,18 +1,27 @@
 #include "Potion.h"
-#include <iostream>
 
-Potion::Potion(float boost) : speedBoost(boost), isConsumed(false) {
-    // Initialisation du sprite
-    sprite.setSize({ 30.f, 30.f });                 // Taille visible
-    sprite.setFillColor(sf::Color::Blue);         // Couleur bleue pour les potions
-    sprite.setPosition(200.f, 200.f);             // Position visible dans la fenêtre
+Potion::Potion(float boost) : boost(boost), consumed(false) {
+    sprite.setSize({ 30.f, 30.f });
+    sprite.setFillColor(sf::Color::Blue);
+    sprite.setPosition(0.f, 0.f);
 }
 
 void Potion::interact(Player& player) {
-    if (!isConsumed) {
-        player.increaseSpeed(speedBoost);         // Augmente la vitesse du joueur
-        isConsumed = true;
-        sprite.setFillColor(sf::Color::Transparent); // Rend la potion invisible
-        std::cout << "Potion consommée ! Vitesse augmentée de " << speedBoost << std::endl;
+    if (!consumed) {
+        player.increaseSpeed(boost);
+        consumed = true;
+        sprite.setFillColor(sf::Color::Transparent); // Rendre la potion invisible
     }
+}
+
+void Potion::drawAll(sf::RenderWindow& window) {
+    window.draw(sprite);
+}
+
+sf::RectangleShape& Potion::getSprite() {
+    return sprite;
+}
+
+const sf::RectangleShape& Potion::getSprite() const {
+    return sprite;
 }
