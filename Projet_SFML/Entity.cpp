@@ -1,14 +1,22 @@
 #include "Entity.h"
 
-Entity::Entity(float x, float y, float width, float height) {
+Entity::Entity(float width, float height, sf::Color color) {
     sprite.setSize({ width, height });
-    sprite.setPosition(x, y);
+    sprite.setFillColor(color);
 }
 
-const sf::Vector2f& Entity::getPosition() const {
-    return sprite.getPosition();
+void Entity::draw(sf::RenderWindow& window) {
+    window.draw(sprite);
+}
+
+sf::RectangleShape& Entity::getSprite() {
+    return sprite;
 }
 
 const sf::RectangleShape& Entity::getSprite() const {
     return sprite;
+}
+
+void Entity::setPosition(float x, float y) {
+    sprite.setPosition(x, y);
 }

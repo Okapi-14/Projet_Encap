@@ -12,7 +12,6 @@ enum class GameState {
     GameOver
 };
 
-
 int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "jeu");
     window.setFramerateLimit(60);

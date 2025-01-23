@@ -1,18 +1,11 @@
 #ifndef INTERACTABLE_H
 #define INTERACTABLE_H
-#include <SFML/Graphics.hpp>
+
 #include "Player.h"
+#include "Entity.h"
 
-class Interactable {
-protected:
-    sf::RectangleShape spriteI; 
-
+class Interactable : public Entity {
 public:
-    virtual ~Interactable() = default;
-    virtual void interact(Player& player) = 0;   
-    const sf::RectangleShape& getSprite() const { 
-        return spriteI;
-    }
-};
+    virtual void interact(Player& player) = 0; 
 
 #endif

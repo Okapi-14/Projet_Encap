@@ -5,6 +5,7 @@
 #include <memory>
 #include "Player.h"
 #include "ChaserEnemy.h"
+#include "Entity.h"
 
 class EntityManager {
 private:

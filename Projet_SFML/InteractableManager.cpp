@@ -17,6 +17,9 @@ void InteractableManager::update(Player& player) {
 
 void InteractableManager::draw(sf::RenderWindow& window) const {
     for (const auto& interactable : interactables) {
+        std::cout << "Drawing interactable at: "
+            << interactable->getSprite().getPosition().x << ", "
+            << interactable->getSprite().getPosition().y << std::endl;
         window.draw(interactable->getSprite());
     }
 }

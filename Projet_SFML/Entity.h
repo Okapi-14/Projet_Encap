@@ -5,17 +5,20 @@
 
 class Entity {
 protected:
-    sf::RectangleShape sprite;
+    sf::RectangleShape sprite; // Centralise le sprite
 
 public:
-    Entity(float x = 0, float y = 0, float width = 50.f, float height = 50.f);
+    Entity(float width = 30.f, float height = 30.f, sf::Color color = sf::Color::White);
+
     virtual ~Entity() = default;
 
     virtual void update(float deltaTime) = 0;
-    virtual void draw(sf::RenderWindow& window) = 0;
+    virtual void draw(sf::RenderWindow& window);
 
-    const sf::Vector2f& getPosition() const;
+    sf::RectangleShape& getSprite();
     const sf::RectangleShape& getSprite() const;
+
+    void setPosition(float x, float y);
 };
 
-#endif // ENTITY_H
+#endif
