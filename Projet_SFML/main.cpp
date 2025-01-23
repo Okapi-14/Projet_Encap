@@ -17,7 +17,6 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "jeu");
     window.setFramerateLimit(60);
 
-    // Chargement de la police
     sf::Font font;
     if (!font.loadFromFile("assets/arial.ttf")) {
         std::cerr << "Erreur : Impossible de charger la police." << std::endl;
@@ -70,7 +69,7 @@ int main() {
         if (gameState == GameState::Playing) {
             playerPtr->draw(window);
             entityManager.drawAll(window);
-            //interactableManager.draw(window);
+            interactableManager.draw(window);
         }
         else if (gameState == GameState::GameOver) {
             sf::Text gameOverText;

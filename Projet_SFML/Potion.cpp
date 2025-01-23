@@ -10,18 +10,21 @@ void Potion::interact(Player& player) {
     if (!consumed) {
         player.increaseSpeed(boost);
         consumed = true;
-        sprite.setFillColor(sf::Color::Transparent); // Rendre la potion invisible
+        sprite.setFillColor(sf::Color::Transparent);
     }
 }
 
-void Potion::drawAll(sf::RenderWindow& window) {
-    window.draw(sprite);
+void Potion::update(float deltaTime) {
+}
+
+void Potion::draw(sf::RenderWindow& window) {
+    window.draw(spriteI);  
 }
 
 sf::RectangleShape& Potion::getSprite() {
-    return sprite;
+    return spriteI;
 }
 
 const sf::RectangleShape& Potion::getSprite() const {
-    return sprite;
+    return spriteI;
 }

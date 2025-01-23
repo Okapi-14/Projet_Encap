@@ -10,18 +10,21 @@ void Key::interact(Player& player) {
     if (!collected) {
         player.addKey();
         collected = true;
-        sprite.setFillColor(sf::Color::Transparent); // Rendre la clé invisible
+        sprite.setFillColor(sf::Color::Transparent); 
     }
 }
 
-void Key::drawAll(sf::RenderWindow& window) {
-    window.draw(sprite);
+void Key::update(float deltaTime) {
+}
+
+void Key::draw(sf::RenderWindow& window) {
+    window.draw(spriteI);
 }
 
 sf::RectangleShape& Key::getSprite() {
-    return sprite;
+    return spriteI;
 }
 
 const sf::RectangleShape& Key::getSprite() const {
-    return sprite;
+    return spriteI;
 }

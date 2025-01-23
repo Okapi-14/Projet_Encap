@@ -1,6 +1,6 @@
 #include "Utils.h"
 
-bool checkCollision(sf::RectangleShape& a, sf::RectangleShape& b) {
+bool checkCollision(const sf::RectangleShape& a, const sf::RectangleShape& b) {
     return a.getGlobalBounds().intersects(b.getGlobalBounds());
 }
 

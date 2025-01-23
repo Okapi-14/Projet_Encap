@@ -13,7 +13,8 @@ public:
     Potion(float boost);
 
     void interact(Player& player) override;
-    void drawAll(sf::RenderWindow& window);
+    void update(float deltaTime);
+    void draw(sf::RenderWindow& window);
 
     sf::RectangleShape& getSprite(); // Méthode non-constante pour permettre les modifications
 
