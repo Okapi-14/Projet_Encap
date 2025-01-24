@@ -2,6 +2,7 @@
 #define KEY_H
 
 #include "Interactable.h"
+#include "Player.h"
 
 class Key : public Interactable {
 private:
@@ -10,8 +11,8 @@ private:
 public:
     Key();
 
-    void interact(Player& player) override;
-    void update(float deltaTime) override;
+    void interact(Player& player) override; // Interaction avec le joueur
+    void draw(sf::RenderWindow& window) const override; // Affichage
 };
 
-#endif
+#endif // KEY_H

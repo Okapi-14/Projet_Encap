@@ -5,18 +5,12 @@ Entity::Entity(float width, float height, sf::Color color) {
     sprite.setFillColor(color);
 }
 
+void Entity::setSpriteSize(float width, float height) {
+    sprite.setSize({ width, height });
+}
+
 void Entity::draw(sf::RenderWindow& window) {
     window.draw(sprite);
 }
 
-sf::RectangleShape& Entity::getSprite() {
-    return sprite;
-}
 
-const sf::RectangleShape& Entity::getSprite() const {
-    return sprite;
-}
-
-void Entity::setPosition(float x, float y) {
-    sprite.setPosition(x, y);
-}

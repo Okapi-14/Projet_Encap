@@ -6,19 +6,18 @@ PatrollingEnemy::PatrollingEnemy(float x1, float y1, float x2, float y2, float s
     direction = pointB - pointA;
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
     if (length != 0) {
-        direction /= length; // Normalise le vecteur
+        direction /= length; 
     }
 }
 
 void PatrollingEnemy::update(float deltaTime) {
     sprite.move(direction * speed * deltaTime);
 
-    // Vérifie si l'ennemi a atteint le point A ou B, et inverse la direction
     sf::Vector2f position = sprite.getPosition();
     if ((direction.x > 0 && position.x >= pointB.x) || (direction.x < 0 && position.x <= pointA.x)) {
-        direction = -direction; // Inverse la direction
+        direction = -direction; 
     }
     if ((direction.y > 0 && position.y >= pointB.y) || (direction.y < 0 && position.y <= pointA.y)) {
-        direction = -direction; // Inverse la direction
+        direction = -direction; 
     }
 }

@@ -6,6 +6,8 @@
 #include "EntityManager.h"
 #include "InteractableManager.h"
 #include "config.h"
+#include "map.h"
+#include "Utils.h"
 
 enum class GameState {
     Playing,
@@ -17,7 +19,7 @@ int main() {
     window.setFramerateLimit(60);
 
     sf::Font font;
-    if (!font.loadFromFile("assets/arial.ttf")) {
+    if (!font.loadFromFile("assets/bones.ttf")) {
         std::cerr << "Erreur : Impossible de charger la police." << std::endl;
         return -1;
     }
@@ -26,15 +28,20 @@ int main() {
     EntityManager entityManager;
     InteractableManager interactableManager;
 
-    auto player = std::make_unique<Player>(100, 100);
+    // Chargement de la carte
+    Map gameMap(WINDOW_WIDTH, WINDOW_HEIGHT);
+    gameMap.loadFromFile("assets/map.txt", interactableManager);
+
+    // Initialiser le joueur
+    auto player = std::make_unique<Player>(2 * gameMap.getTileSize(), 2 * gameMap.getTileSize());
     Player* playerPtr = player.get();
-
     entityManager.addEntity(std::move(player));
-    entityManager.addEntity(std::make_unique<ChaserEnemy>(400, 300));
-    entityManager.addEntity(std::make_unique<PatrollingEnemy>(200, 200, 400, 400));
 
-    interactableManager.addInteractable(std::make_unique<Potion>(50.f));
-    interactableManager.addInteractable(std::make_unique<Key>());
+    // Ajouter des ennemis
+    auto enemy1 = std::make_unique<ChaserEnemy>(5 * gameMap.getTileSize(), 5 * gameMap.getTileSize());
+    auto enemy2 = std::make_unique<PatrollingEnemy>(7 * gameMap.getTileSize(), 3 * gameMap.getTileSize(), 10 * gameMap.getTileSize(), 5 * gameMap.getTileSize());
+    entityManager.addEntity(std::move(enemy1));
+    entityManager.addEntity(std::move(enemy2));
 
     sf::Clock clock;
 
@@ -43,48 +50,37 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if (gameState == GameState::GameOver && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                window.close();
+            }
         }
 
         float deltaTime = clock.restart().asSeconds();
 
         if (gameState == GameState::Playing) {
             playerPtr->update(deltaTime);
-            entityManager.updateEnemiesWithPlayer(deltaTime, *playerPtr);
             entityManager.updateAll(deltaTime);
             interactableManager.update(*playerPtr);
 
-            for (const auto& entity : entityManager.getEntities()) {
-                auto* enemy = dynamic_cast<Enemy*>(entity.get());
-                if (enemy && checkCollision(playerPtr->getSprite(), enemy->getSprite())) {
-                    std::cout << "Game Over!" << std::endl;
-                    gameState = GameState::GameOver;
-                    break;
-                }
-            }
-        }
+            window.clear();
 
-        window.clear();
-
-        if (gameState == GameState::Playing) {
+            gameMap.draw(window);
             playerPtr->draw(window);
             entityManager.drawAll(window);
-            interactableManager.draw(window);
+            interactableManager.draw(window); // Dessine les objets interactables
+
+            window.display();
         }
         else if (gameState == GameState::GameOver) {
             sf::Text gameOverText;
             gameOverText.setFont(font);
-            gameOverText.setString("Game Over! Appuyez sur Echap pour quitter.");
-            gameOverText.setCharacterSize(30);
-            gameOverText.setFillColor(sf::Color::Red);
-            gameOverText.setPosition(WINDOW_WIDTH / 2.f - 200.f, WINDOW_HEIGHT / 2.f - 50.f);
-
+            gameOverText.setString("Game Over! Appuyez sur Echap pour quitter");
+            gameOverText.setCharacterSize(70);
+            gameOverText.setFillColor(sf::Color::White);
+            gameOverText.setPosition(WINDOW_WIDTH / 2.f - 200, WINDOW_HEIGHT / 2.f - 50);
             window.draw(gameOverText);
-        }
-
-        window.display();
-
-        if (gameState == GameState::GameOver && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            window.close();
+            window.display();
         }
     }
 

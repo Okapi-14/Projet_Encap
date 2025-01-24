@@ -1,4 +1,5 @@
 #include "InteractableManager.h"
+#include <iostream>
 
 void InteractableManager::addInteractable(std::unique_ptr<Interactable> interactable) {
     interactables.push_back(std::move(interactable));
@@ -7,9 +8,9 @@ void InteractableManager::addInteractable(std::unique_ptr<Interactable> interact
 void InteractableManager::update(Player& player) {
     interactables.erase(std::remove_if(interactables.begin(), interactables.end(),
         [&player](const std::unique_ptr<Interactable>& interactable) {
-            if (checkCollision(player.getSprite(), interactable->getSprite())) {
-                interactable->interact(player);
-                return true; // Supprime l'interactable après interaction
+            if (player.getSprite().getGlobalBounds().intersects(interactable->getSprite().getGlobalBounds())) {
+                interactable->interact(player); // Applique l'effet d'interaction
+                return true; // Supprime l'objet de la liste après interaction
             }
             return false;
         }), interactables.end());
@@ -17,13 +18,6 @@ void InteractableManager::update(Player& player) {
 
 void InteractableManager::draw(sf::RenderWindow& window) const {
     for (const auto& interactable : interactables) {
-        std::cout << "Drawing interactable at: "
-            << interactable->getSprite().getPosition().x << ", "
-            << interactable->getSprite().getPosition().y << std::endl;
-        window.draw(interactable->getSprite());
+        interactable->draw(window); // Dessine chaque interactable
     }
-}
-
-size_t InteractableManager::getCount() const {
-    return interactables.size();
 }
