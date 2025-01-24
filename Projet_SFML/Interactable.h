@@ -6,6 +6,6 @@
 
 class Interactable : public Entity {
 public:
-    virtual void interact(Player& player) = 0; 
-
+    virtual void interact(Player& player) = 0;
+}
 #endif
